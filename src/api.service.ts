@@ -26,13 +26,13 @@ export function getFlights(flightParameters: GetFlights) {
 
 export function getLocations(term: string) {
     const queryParams = {term, v: 2, locale: 'en-US'};
-    return httpGet<GetLocationsResponse>('/locations', queryParams);
+    return httpGet<GetLocationsResponse>('/locations/', queryParams);
 }
 
 function httpGet<T>(url: string, query: Object): Observable<HttpResponse<T>> {
     return Observable.fromPromise(new Promise((resolve, reject) => {
         RxHR
-            .get(BASE_URL + url, {json: true, qs: query})
+            .get(BASE_URL + url, {json: true, qs: query, headers: {'User-Agent': 'Rx-Http-Request'}})
             .subscribe((data) => {
                 if (data.response.statusCode < 400) {
                     resolve({statusCode: data.response.statusCode, data: data.response.body});

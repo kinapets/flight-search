@@ -1,39 +1,48 @@
 import * as React from 'react';
 import {Form, DatePicker, Button, AutoComplete} from 'antd';
 import {FormComponentProps} from 'antd/lib/form';
+import * as api from './api.service';
+import {BehaviorSubject} from 'rxjs'
+import * as _ from 'lodash';
 
 const FormItem = Form.Item;
 
 class SearchForm extends React.Component {
-    state = {
-        results: []
+    state = {results: []}
+    props: FormComponentProps;
+    behaviourSubject = new BehaviorSubject<string>('');
+
+    constructor(props: FormComponentProps) {
+        super(props);
+        this.behaviourSubject
+            .debounceTime(500)
+            .subscribe((value: string) => {
+                api.getLocations(value).subscribe((res) => {
+                    const results = res.data.locations.map((location) => `${location.name}`);
+                    this.setState({results: _.uniq(results)});
+                })
+            })
     }
 
-    props: FormComponentProps;
-    handleSubmit = (event: any) => {
+    handleSubmit (event: any) {
         event.preventDefault();
 
         this.props.form.validateFields((err: any, fieldsValue: any) => {
             if (err) {
                 return;
             }
-
-            const values = {
-                ...fieldsValue,
-                'date-picker': new Date(fieldsValue['date'].format('YYYY-MM-DD')),
-            };
+            const values = {...fieldsValue,date: new Date(fieldsValue['date'].format('YYYY-MM-DD'))};
             console.log(values);
         });
     }
-    handleSearch = (value: string) => {
-        let results: any;
+
+    handleSearch(value: string) {
         if (!value || value.indexOf('@') >= 0) {
-          results = [];
+            this.setState({results: []});
         } else {
-          results = ['gmail.com', '163.com', 'qq.com'].map(domain => `${value}@${domain}`);
+            this.behaviourSubject.next('value');
         }
-        this.setState({ results });
-      }
+    }
 
     render() {
         const {getFieldDecorator} = this.props.form;
