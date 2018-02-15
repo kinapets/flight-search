@@ -1,7 +1,8 @@
 import {RxHR} from '@akanass/rx-http-request';
 import * as moment from 'moment';
 import {Observable} from 'rx';
-import {HttpResponse, GetFlightsQueryParameters, GetFlights, GetFlightsResponse, GetLocationsResponse} from './api.service.interface'
+import {HttpResponse, GetFlightsQueryParameters} from './api.service.interface';
+import {GetFlights, GetFlightsResponse, GetLocationsResponse} from './api.service.interface';
 
 const BASE_URL = 'https://api.skypicker.com';
 const RESULTS_ON_PAGE = 5;
@@ -19,7 +20,7 @@ export function getFlights(flightParameters: GetFlights) {
         to: to,
         dateFrom: moment(date).format('DD/MM/YYYY'),
         dateTo: moment(date).format('DD/MM/YYYY')
-    }
+    };
     return httpGet<GetFlightsResponse>('/flights', queryParams);
 }
 
@@ -34,11 +35,10 @@ function httpGet<T>(url: string, query: Object): Observable<HttpResponse<T>> {
             .get(BASE_URL + url, {json: true, qs: query})
             .subscribe((data) => {
                 if (data.response.statusCode < 400) {
-                    resolve({statusCode: data.response.statusCode, data: data.response.body})
+                    resolve({statusCode: data.response.statusCode, data: data.response.body});
                 } else {
-                    reject({statusCode: data.response.statusCode, errPayload: data})
+                    reject({statusCode: data.response.statusCode, errPayload: data});
                 }
-            })
+            });
     }));
 }
-

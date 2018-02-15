@@ -1,7 +1,7 @@
 
 export interface AbstractResponse {
     statusCode: number;
-    errPayload?: any;
+    errPayload?: Object;
 }
 
 export interface HttpResponse<T> extends AbstractResponse {
@@ -30,14 +30,14 @@ export interface GetFlightsQueryParameters {
 }
 
 export interface GetFlightsResponse {
-    [key: string]: any,
+    [key: string]: Object;
     data: {
         mapIdfrom: string;
         duration: Object;
         flyTo: string;
         conversion: Object;
         mapIdto: string;
-        airlines: any[];
+        airlines: Object[];
         id: string;
         facilitated_booking_available: boolean;
         pnr_count: number;
@@ -55,14 +55,14 @@ export interface GetFlightsResponse {
         countryFrom: Object;
         p1: number;
         dTime: number;
-        found_on: any[];
+        found_on: Object[];
         booking_token: string;
-        routes: any[];
+        routes: Object[];
         cityFrom: string;
         aTime: number;
-        route: any[];
+        route: Object[];
         distance: number;
-    }
+    };
 }
 
 export interface GetLocationsResponse {
@@ -81,7 +81,7 @@ export interface GetLocationsResponse {
             name: string;
             code: string;
             slug: string;
-            subdivision: any;
+            subdivision: Object;
             country: Object;
             region: Object;
             continent: Object;
@@ -90,5 +90,5 @@ export interface GetLocationsResponse {
         alternative_departure_points: Object[];
         type: string;
     }[];
-    meta: any
+    meta: Object;
 }
