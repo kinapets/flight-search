@@ -1,8 +1,18 @@
 import {RxHR} from '@akanass/rx-http-request';
 import * as moment from 'moment';
+import {Observable} from 'rx';
 
 const FLIGHTS_URL = 'https://api.skypicker.com/flights';
 const RESULTS_ON_PAGE = 5;
+
+interface AbstractResponse {
+    statusCode: number;
+    errPayload?: any;
+}
+
+interface HttpResponse<T> extends AbstractResponse{
+    data?: T;
+}
 
 interface GetFlights {
     date: Date;
@@ -25,7 +35,44 @@ interface GetFlightsQueryParameters {
     limit?: number;
 }
 
-export function getFlights(flightParameters: GetFlights) {
+interface GetFlightsResponse {
+    [key: string]: any,
+    data: {
+        mapIdfrom: string,
+        duration: Object,
+        flyTo: string,
+        conversion: Object,
+        mapIdto: string,
+        airlines: any[],
+        id: string,
+        facilitated_booking_available: boolean,
+        pnr_count: number,
+        fly_duration: string,
+        countryTo: Object,
+        baglimit: Object,
+        aTimeUTC: number,
+        p3: number,
+        price: number,
+        bags_price: Object,
+        cityTo: string,
+        flyFrom: string,
+        dTimeUTC: number,
+        p2: number,
+        countryFrom: Object,
+        p1: number,
+        dTime: number,
+        found_on: any[],
+        booking_token: string,
+        routes: any[],
+        cityFrom: string,
+        aTime: number,
+        route: any[],
+        distance: number
+
+    }
+}
+
+export function getFlights(flightParameters: GetFlights): Observable<HttpResponse<GetFlightsResponse>> {
     const {page, date, from, to} = flightParameters;
     const queryParams: GetFlightsQueryParameters = {
         sort: 'price',
@@ -39,7 +86,20 @@ export function getFlights(flightParameters: GetFlights) {
         dateFrom: moment(date).format('DD/MM/YYYY'),
         dateTo: moment(date).format('DD/MM/YYYY')
     }
-    console.log(queryParams)
-    return RxHR.get(FLIGHTS_URL, {json: true, qs: queryParams});
+    return httpGet<GetFlightsResponse>(FLIGHTS_URL, queryParams);
+}
+
+function httpGet<T>(url: string, query: Object): Observable<HttpResponse<T>> {
+    return Observable.fromPromise(new Promise((resolve, reject) => {
+        RxHR
+            .get(url, {json: true, qs: query})
+            .subscribe((data) => {
+                if (data.response.statusCode < 400) {
+                    resolve({statusCode: data.response.statusCode, data: data.response.body})
+                } else {
+                    reject({statusCode: data.response.statusCode, errPayload: data})
+                }
+            })
+    }));
 }
 
