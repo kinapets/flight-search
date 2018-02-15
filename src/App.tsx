@@ -4,10 +4,14 @@ import './App.css';
 import 'antd/dist/antd.css';
 
 class App extends React.Component {
+  handleSubmit(data: any) {
+    console.log(data)
+  }
+
   render() {
     return (
       <div className="App">
-        <Form />
+        <Form handleSubmit={this.handleSubmit}/>
       </div>
     );
   }

@@ -4,15 +4,18 @@ import {FormComponentProps} from 'antd/lib/form';
 import * as api from './api.service';
 import {BehaviorSubject} from 'rxjs'
 import * as _ from 'lodash';
-
 const FormItem = Form.Item;
 
-class SearchForm extends React.Component {
+interface SearchFormProps extends FormComponentProps {
+    handleSubmit: Function;
+}
+
+class SearchForm extends React.Component<SearchFormProps, {}> {
     state = {results: []}
-    props: FormComponentProps;
+    props: SearchFormProps;
     behaviourSubject = new BehaviorSubject<string>('');
 
-    constructor(props: FormComponentProps) {
+    constructor(props: SearchFormProps) {
         super(props);
         this.behaviourSubject
             .debounceTime(500)
@@ -24,7 +27,7 @@ class SearchForm extends React.Component {
             })
     }
 
-    handleSubmit (event: any) {
+    handleSubmit = (event: any) => {
         event.preventDefault();
 
         this.props.form.validateFields((err: any, fieldsValue: any) => {
@@ -32,15 +35,15 @@ class SearchForm extends React.Component {
                 return;
             }
             const values = {...fieldsValue,date: new Date(fieldsValue['date'].format('YYYY-MM-DD'))};
-            console.log(values);
+            this.props.handleSubmit(values);
         });
     }
 
-    handleSearch(value: string) {
+    handleSearch = (value: string) => {
         if (!value || value.indexOf('@') >= 0) {
             this.setState({results: []});
         } else {
-            this.behaviourSubject.next('value');
+            this.behaviourSubject.next(value);
         }
     }
 
