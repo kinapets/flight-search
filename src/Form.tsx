@@ -10,6 +10,12 @@ interface SearchFormProps extends FormComponentProps {
     handleSubmit: Function;
 }
 
+export interface SearchFormData {
+    from: string;
+    to: string;
+    date: Date;
+}
+
 class SearchForm extends React.Component<SearchFormProps, {}> {
     state = {results: []}
     props: SearchFormProps;
@@ -29,7 +35,6 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
 
     handleSubmit = (event: any) => {
         event.preventDefault();
-
         this.props.form.validateFields((err: any, fieldsValue: any) => {
             if (err) {
                 return;

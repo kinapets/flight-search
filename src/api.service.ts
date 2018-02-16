@@ -9,12 +9,13 @@ const RESULTS_ON_PAGE = 5;
 
 export function getFlights(flightParameters: GetFlights) {
     const {page, date, from, to} = flightParameters;
+    let _page = page ? page : 1;
     const queryParams: GetFlightsQueryParameters = {
         sort: 'price',
         asc: 1,
         curr: 'EUR',
         locale: 'en',
-        offset: (page - 1) * RESULTS_ON_PAGE,
+        offset: (_page - 1) * RESULTS_ON_PAGE,
         limit: RESULTS_ON_PAGE,
         flyFrom: from,
         to: to,

@@ -12,7 +12,7 @@ export interface GetFlights {
     date: Date;
     from: string;
     to: string;
-    page: number;
+    page?: number;
 }
 
 export interface GetFlightsQueryParameters {
@@ -31,38 +31,40 @@ export interface GetFlightsQueryParameters {
 
 export interface GetFlightsResponse {
     [key: string]: Object;
-    data: {
-        mapIdfrom: string;
-        duration: Object;
-        flyTo: string;
-        conversion: Object;
-        mapIdto: string;
-        airlines: Object[];
-        id: string;
-        facilitated_booking_available: boolean;
-        pnr_count: number;
-        fly_duration: string;
-        countryTo: Object;
-        baglimit: Object;
-        aTimeUTC: number;
-        p3: number;
-        price: number;
-        bags_price: Object;
-        cityTo: string;
-        flyFrom: string;
-        dTimeUTC: number;
-        p2: number;
-        countryFrom: Object;
-        p1: number;
-        dTime: number;
-        found_on: Object[];
-        booking_token: string;
-        routes: Object[];
-        cityFrom: string;
-        aTime: number;
-        route: Object[];
-        distance: number;
-    };
+    data: Flight[];
+}
+
+export interface Flight {
+    mapIdfrom: string;
+    duration: Object;
+    flyTo: string;
+    conversion: Object;
+    mapIdto: string;
+    airlines: Object[];
+    id: string;
+    facilitated_booking_available: boolean;
+    pnr_count: number;
+    fly_duration: string;
+    countryTo: Object;
+    baglimit: Object;
+    aTimeUTC: number;
+    p3: number;
+    price: number;
+    bags_price: Object;
+    cityTo: string;
+    flyFrom: string;
+    dTimeUTC: number;
+    p2: number;
+    countryFrom: Object;
+    p1: number;
+    dTime: number;
+    found_on: Object[];
+    booking_token: string;
+    routes: Object[];
+    cityFrom: string;
+    aTime: number;
+    route: Object[];
+    distance: number;
 }
 
 export interface GetLocationsResponse {
