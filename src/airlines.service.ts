@@ -15,6 +15,11 @@ class AirlineService {
         data.map(airline => this.data[airline.id] = airline);
     }
 
+    getNameByCode(code: string) {
+        const airline = this.getByCode(code);
+        return airline ? airline.name : null;
+    }
+
     getByCode(code: string) {
         const airline = this.data[code];
         return airline || null;

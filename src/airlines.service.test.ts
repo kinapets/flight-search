@@ -15,7 +15,8 @@ describe('Airlines service test', () => {
         should(airline).be.eql(null);
     })
 
-
-
-
+    it('should get airline by code of airline', () => {
+        let airline =  airlines.getNameByCode('7I');
+        should(airline).be.eql('Insel Air');
+    })
 });
