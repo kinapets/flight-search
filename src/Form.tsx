@@ -24,7 +24,7 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
     constructor(props: SearchFormProps) {
         super(props);
         this.behaviourSubject
-            .debounceTime(500)
+            .debounceTime(200)
             .subscribe((value: string) => {
                 api.getLocations(value).subscribe((res) => {
                     const results = res.data.locations.map((location) => `${location.name}`);

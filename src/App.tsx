@@ -8,12 +8,13 @@ import * as api from './api.service';
 // import {GetFlightsResponse} from './api.service.interface';
 
 class App extends React.Component {
-    state = {flights: []};
+    state = {flights: [], loading: false};
 
     handleSubmit = (data: SearchFormData) => {
         const {from, date, to} = data;
+        this.setState({loading: true});
         api.getFlights({from, date, to}).subscribe(res => {
-            this.setState({flights: res.data.data});
+            this.setState({flights: res.data.data, loading: false});
         })
     }
 
@@ -21,7 +22,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <Form handleSubmit={this.handleSubmit} />
-                <SearchResults flights={this.state.flights}/>
+                <SearchResults loading={this.state.loading} flights={this.state.flights}/>
             </div>
         );
     }

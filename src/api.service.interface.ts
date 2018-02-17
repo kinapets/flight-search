@@ -40,7 +40,7 @@ export interface Flight {
     flyTo: string;
     conversion: Object;
     mapIdto: string;
-    airlines: Object[];
+    airlines: string[];
     id: string;
     facilitated_booking_available: boolean;
     pnr_count: number;
@@ -60,11 +60,40 @@ export interface Flight {
     dTime: number;
     found_on: Object[];
     booking_token: string;
-    routes: Object[];
+    routes: string[];
     cityFrom: string;
     aTime: number;
-    route: Object[];
+    route: Route[];
     distance: number;
+}
+
+export interface Route {
+    aTime: number;
+    aTimeUTC: number;
+    airline: string;
+    bags_recheck_required: boolean;
+    cityFrom: string;
+    cityTo: string
+    combination_id: string;
+    dTime: number;
+    dTimeUTC: number;
+    flight_no: number;
+    flyFrom: string
+    flyTo: string;
+    found_on: string;
+    guarantee: boolean;
+    id: string;
+    latFrom: number;
+    latTo: number
+    lngFrom: number;
+    lngTo: number;
+    mapIdfrom: string
+    mapIdto: string;
+    original_return: number;
+    price: number;
+    return: number;
+    source: string;
+    vehicle_type: string;
 }
 
 export interface GetLocationsResponse {
