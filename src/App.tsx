@@ -14,7 +14,6 @@ class App extends React.Component {
         const {from, date, to} = data;
         api.getFlights({from, date, to}).subscribe(res => {
             this.setState({flights: res.data.data});
-
         })
     }
 

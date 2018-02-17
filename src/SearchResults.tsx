@@ -1,19 +1,16 @@
 import * as React from 'react';
-// import {GetFlightsResponse} from './api.service.interface'
+import Item from './SearchResultItem';
+import {Flight} from './api.service.interface';
 
-// interface SearchResultsProps {
-//     flights: GetFlightsResponse;
-// }
+interface SearchResultsProps {
+    flights: Flight[];
+}
 
-export default (props: any) => {
-    console.log(props);
+export default (props: SearchResultsProps) => {
 
     return (
         <ul>
-           {props.flights.map((value:any, key:any) => {return (<li key={key}>tesagdas</li>)})}
-            {/* {props.flights.map((flight) => {
-                return flight.cityFrom
-            })} */}
+           {props.flights.map((flight:Flight, key:any) => {return (<Item key={flight.id} flight={flight}/>)})}
         </ul>
     );
 }
