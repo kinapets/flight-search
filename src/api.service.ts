@@ -4,7 +4,10 @@ import {Observable} from 'rx';
 import {HttpResponse, GetFlightsQueryParameters} from './api.service.interface';
 import {GetFlights, GetFlightsResponse, GetLocationsResponse} from './api.service.interface';
 
+const BOOK_URL = 'https://www.kiwi.com/en/booking?token=';
+const IMAGES_URL = 'https://images.kiwi.com';
 const BASE_URL = 'https://api.skypicker.com';
+const BACKGROUND_IMAGE = 'https://i0.wp.com/picjumbo.com/wp-content/uploads/HNCK2596.jpg?w=2210&quality=50';
 const RESULTS_ON_PAGE = 5;
 
 export function getFlights(flightParameters: GetFlights) {
@@ -28,6 +31,23 @@ export function getFlights(flightParameters: GetFlights) {
 export function getLocations(term: string) {
     const queryParams = {term, v: 2, locale: 'en-US'};
     return httpGet<GetLocationsResponse>('/locations/', queryParams);
+}
+
+export function getBookUrl(token: string) {
+    return `${BOOK_URL}${token}`;
+}
+
+export function getAirlineLogo(airlineCode: string) {
+    return `${IMAGES_URL}/airlines/64/${airlineCode}.png`;
+}
+
+export function getCityPromoPhoto(mapIdto: string, code: string) {
+    const lowerCaseCode = code.toLocaleLowerCase();
+    return `${IMAGES_URL}/photos/600x330/${mapIdto}_${lowerCaseCode}.jpg`
+}
+
+export function getBackgroundImage() {
+    return BACKGROUND_IMAGE;
 }
 
 function httpGet<T>(url: string, query: Object): Observable<HttpResponse<T>> {

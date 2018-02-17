@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {Card, Col, Timeline, Row, Button} from 'antd';
 import {Flight, Route} from 'api.service.interface';
-import * as moment from 'moment';
 import airlinesService from './airlines.service';
-
-const BOOK_URL = 'https://www.kiwi.com/en/booking?token='
+import {getBookUrl, getAirlineLogo} from 'api.service';
+import {formatTimestamp, formatTitle} from 'utils';
 
 interface AirlineLogoProps {
     airlineCode: string;
@@ -23,7 +22,6 @@ export default (props: SearchResultsItemProps) => {
     return (
         <Card
             loading={props.loading}
-            hoverable={true}
             style={{marginTop: 16}}
             title={!props.loading && formatTitle(props.flight)}
         >
@@ -36,7 +34,6 @@ export default (props: SearchResultsItemProps) => {
 const RouteTimeLine = (props: RouteTimelineProps) => {
     const {route} = props,
         {cityFrom, cityTo, aTime, dTime, airline, flyFrom, flyTo} = route;
-
     return (
         <Row>
             <Col span={8}>
@@ -58,19 +55,6 @@ const RouteTimeLine = (props: RouteTimelineProps) => {
 }
 
 const AirlineLogo = (props: AirlineLogoProps) => {
-    const url = `https://images.kiwi.com/airlines/64/${props.airlineCode}.png`;
+    const url = getAirlineLogo(props.airlineCode);
     return <img style={{width: 50}} src={url} />
 }
-function formatTitle(flight: Flight) {
-    const {price, fly_duration, aTime} = flight;
-    return `${formatTimestamp(aTime, 'DD. MM. YYYY - h:mm')}, ${fly_duration}, ${price} €`
-}
-
-function formatTimestamp(timestamp: number, format: string) {
-    return moment(new Date(timestamp * 1000)).format(format);
-}
-
-function getBookUrl(token: string) {
-    return `${BOOK_URL}${token}`;
-}
-

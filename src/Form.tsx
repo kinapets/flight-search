@@ -28,7 +28,10 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
             .debounceTime(200)
             .subscribe((value: string) => {
                 api.getLocations(value).subscribe((res) => {
-                    const results = res.data.locations.map((location) => `${location.name}`);
+                    const results = res.data.locations
+                        // filter only cities for autocompletion
+                        .filter(location => location.type === 'city')
+                        .map((location) => `${location.name}`);
                     this.setState({results: _.uniq(results)});
                 })
             })
@@ -40,7 +43,7 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
             if (err) {
                 return;
             }
-            const values = {...fieldsValue,date: new Date(fieldsValue['date'].format('YYYY-MM-DD'))};
+            const values = {...fieldsValue, date: new Date(fieldsValue['date'].format('YYYY-MM-DD'))};
             this.props.handleSubmit(values);
         });
     }
@@ -67,36 +70,50 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
         };
         const config = {rules: [{required: true, message: 'Please select time!'}]};
         const configDate = {rules: [{type: 'object', required: true, message: 'Please select time!'}]};
-
+        const url = api.getBackgroundImage();
         return (
-            <Form style={{background: '#eeeeee', padding: 8}} onSubmit={this.handleSubmit}>
-                <FormItem {...formItemLayout} label="From">
-                    {getFieldDecorator('from', config)(
-                        <AutoComplete
-                            dataSource={this.state.results}
-                            style={{width: 171}}
-                            onSearch={this.handleSearch}
-                        />
-                    )}
-                </FormItem>
-                <FormItem {...formItemLayout} label="To">
-                    {getFieldDecorator('to', config)(
-                        <AutoComplete
-                            dataSource={this.state.results}
-                            style={{width: 171}}
-                            onSearch={this.handleSearch}
-                        />
-                    )}
-                </FormItem>
+            <div
+                style={{
+                    backgroundImage: `url("${url}")`,
+                    backgroundAttachment: 'fixed',
+                    backgroundSize: '100%'
+                }}
+            >
+                <Form
+                    style={{
+                        background: 'rgba(255, 255, 255, 0.7)',
+                        padding: 8
+                    }}
+                    onSubmit={this.handleSubmit}
+                >
+                    <FormItem {...formItemLayout} label="From">
+                        {getFieldDecorator('from', config)(
+                            <AutoComplete
+                                dataSource={this.state.results}
+                                style={{width: 171}}
+                                onSearch={this.handleSearch}
+                            />
+                        )}
+                    </FormItem>
+                    <FormItem {...formItemLayout} label="To">
+                        {getFieldDecorator('to', config)(
+                            <AutoComplete
+                                dataSource={this.state.results}
+                                style={{width: 171}}
+                                onSearch={this.handleSearch}
+                            />
+                        )}
+                    </FormItem>
 
-                <FormItem {...formItemLayout} label="Date">
-                    {getFieldDecorator('date', configDate)(<DatePicker />)}
-                </FormItem>
+                    <FormItem {...formItemLayout} label="Date">
+                        {getFieldDecorator('date', configDate)(<DatePicker />)}
+                    </FormItem>
 
-                <FormItem wrapperCol={{xs: {span: 24, offset: 0}, sm: {span: 16, offset: 8}, }}>
-                    <Button loading={this.props.loading} type="primary" htmlType="submit">Submit</Button>
-                </FormItem>
-            </Form>
+                    <FormItem wrapperCol={{xs: {span: 24, offset: 0}, sm: {span: 16, offset: 8}, }}>
+                        <Button loading={this.props.loading} type="primary" htmlType="submit">Submit</Button>
+                    </FormItem>
+                </Form>
+            </div>
         );
     }
 }

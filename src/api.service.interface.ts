@@ -45,7 +45,7 @@ export interface Flight {
     facilitated_booking_available: boolean;
     pnr_count: number;
     fly_duration: string;
-    countryTo: Object;
+    countryTo: {code: string;};
     baglimit: Object;
     aTimeUTC: number;
     p3: number;
