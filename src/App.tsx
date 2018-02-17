@@ -5,7 +5,6 @@ import SearchResults from './SearchResults';
 import './App.css';
 import 'antd/dist/antd.css';
 import * as api from './api.service';
-import {Button} from 'antd';
 import {Flight} from 'api.service.interface';
 
 interface AppState {
@@ -42,11 +41,16 @@ class App extends React.Component {
     }
 
     render() {
+        const {loading, loadingMore, flights} = this.state;
         return (
             <div className="App">
-                <Form handleSubmit={this.handleSubmit} />
-                <SearchResults loading={this.state.loading} flights={this.state.flights}/>
-                <Button loading={this.state.loadingMore} onClick={this.onNextClick}>Load more...</Button>
+                <Form loading={loading} handleSubmit={this.handleSubmit} />
+                <SearchResults
+                    loadingMore={loadingMore}
+                    loading={loading}
+                    flights={flights}
+                    loadMoreButtonClicked={this.onNextClick}
+                />
             </div>
         );
     }

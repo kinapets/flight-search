@@ -1,27 +1,32 @@
 import * as React from 'react';
 import Item from './SearchResultItem';
 import {Flight} from './api.service.interface';
-import {Col, Row} from 'antd';
+import {Col, Row, Button} from 'antd';
 
 interface SearchResultsProps {
     flights: Flight[];
     loading: boolean;
+    loadingMore: boolean;
+    loadMoreButtonClicked: () => void;
 }
 
 export default (props: SearchResultsProps) => {
     return (
         <Row>
-            <Col span={12} offset={6}>{resultsFactory(props)}</Col>
+            <Col span={12} offset={6}>
+                <List {...props} />
+                {props.flights.length > 0 &&
+                    <Button
+                        style={{marginTop: 16, marginBottom: 16}}
+                        loading={props.loadingMore}
+                        onClick={props.loadMoreButtonClicked}
+                    >
+                        Load more...
+                    </Button>
+                }
+            </Col>
         </Row>
     );
-}
-
-function resultsFactory(props: SearchResultsProps) {
-    if (props.flights.length === 0) {
-        return <NoResults {...props}/>;
-    } else {
-        return <List {...props} />;
-    }
 }
 
 const List = (props: SearchResultsProps) => {
@@ -31,11 +36,5 @@ const List = (props: SearchResultsProps) => {
                 <Item loading={props.loading} key={flight.id} flight={flight} />
             )}
         </div>
-    );
-}
-
-const NoResults = (props: SearchResultsProps) => {
-    return (
-        <div>{props.loading ? 'Loading' : 'No results'}</div>
     );
 }

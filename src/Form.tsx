@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 
 interface SearchFormProps extends FormComponentProps {
     handleSubmit: Function;
+    loading: boolean;
 }
 
 export interface SearchFormData {
@@ -68,7 +69,7 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
         const configDate = {rules: [{type: 'object', required: true, message: 'Please select time!'}]};
 
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form style={{background: '#eeeeee', padding: 8}} onSubmit={this.handleSubmit}>
                 <FormItem {...formItemLayout} label="From">
                     {getFieldDecorator('from', config)(
                         <AutoComplete
@@ -93,7 +94,7 @@ class SearchForm extends React.Component<SearchFormProps, {}> {
                 </FormItem>
 
                 <FormItem wrapperCol={{xs: {span: 24, offset: 0}, sm: {span: 16, offset: 8}, }}>
-                    <Button type="primary" htmlType="submit">Submit</Button>
+                    <Button loading={this.props.loading} type="primary" htmlType="submit">Submit</Button>
                 </FormItem>
             </Form>
         );
