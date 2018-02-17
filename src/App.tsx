@@ -2,10 +2,11 @@ import * as React from 'react';
 import Form from './Form';
 import {SearchFormData} from './Form';
 import SearchResults from './SearchResults';
-import './App.css';
 import 'antd/dist/antd.css';
 import * as api from './api.service';
 import {Flight} from 'api.service.interface';
+import {Layout} from 'antd';
+const {Footer, Content} = Layout;
 
 interface AppState {
     flights: Flight[];
@@ -31,7 +32,7 @@ class App extends React.Component {
     }
 
     onNextClick = () => {
-        if (!this.state.currentSearch) {return};
+        if (!this.state.currentSearch) {return };
         const {from, date, to} = this.state.currentSearch,
             nextPage = ++this.state.currentSearch.page;
         this.setState({loadingMore: true, currentSearch: {...this.state.currentSearch, page: nextPage}});
@@ -43,15 +44,24 @@ class App extends React.Component {
     render() {
         const {loading, loadingMore, flights} = this.state;
         return (
-            <div className="App">
-                <Form loading={loading} handleSubmit={this.handleSubmit} />
-                <SearchResults
-                    loadingMore={loadingMore}
-                    loading={loading}
-                    flights={flights}
-                    loadMoreButtonClicked={this.onNextClick}
-                />
-            </div>
+            <Layout>
+                <Layout>
+                    <Content>
+                        <Form loading={loading} handleSubmit={this.handleSubmit} />
+                        <SearchResults
+                            loadingMore={loadingMore}
+                            loading={loading}
+                            flights={flights}
+                            loadMoreButtonClicked={this.onNextClick}
+                        />
+                    </Content>
+                </Layout>
+                <Footer>
+                    Radim Štěpaník ©2016
+                        , <a href="mailto:radim.stepanik@gmail.com">radim.stepanik@gmail.com</a>
+                    , <a href="https://twitter.com/kinapets">@kinapets</a>
+                </Footer>
+            </Layout>
         );
     }
 }
