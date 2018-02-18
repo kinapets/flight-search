@@ -18,6 +18,7 @@
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
+    "deploy": "npm run build && aws s3 sync build/ s3://quick-flight-search --profile qest --acl public-read",
     "test": "react-scripts-ts test --env=jsdom",
     "test-services": "react-scripts-ts test",
     "eject": "react-scripts-ts eject"
