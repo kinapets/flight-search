@@ -1,5 +1,5 @@
 # Kiwi.com Modern JS weekend – entry task
-TLDR here is the link: [http://quick-flight-search.s3-website-eu-west-1.amazonaws.com/ (http://quick-flight-search.s3-website-eu-west-1.amazonaws.com/)
+TLDR here is the link: (http://quick-flight-search.s3-website-eu-west-1.amazonaws.com/)
 
 This repository is used for entry task for Modern JS weekend. There is a simple use case.
 
